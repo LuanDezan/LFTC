@@ -12,7 +12,7 @@ function validarRegex() {
     }
 
     try {
-        const regex = new RegExp(regexPattern);
+        const regex = new RegExp(`^(?:${regexPattern})$`);
         
         const estaDeAcordo = regex.test(text);
 
