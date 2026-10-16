@@ -16,18 +16,17 @@ function validarGR() {
     try {
         const { rules, startSymbol } = parseGrammar(grammarText);
         
-        // --- Extração da Definição Formal G = (V, T, P, S) ---
+        // G = (V, T, P, S)
         const V = new Set();
         const T = new Set();
 
         for (const [nonTerminal, productions] of Object.entries(rules)) {
-            V.add(nonTerminal); // Adiciona o lado esquerdo em V
+            V.add(nonTerminal);
             
             for (let prod of productions) {
                 for (let char of prod) {
-                    if (char === '&') continue; // Épsilon não entra no conjunto T
+                    if (char === '&') continue;
                     
-                    // Se for letra maiúscula, considera Não Terminal (V), senão Terminal (T)
                     if (char.match(/[A-Z]/)) {
                         V.add(char);
                     } else {
@@ -37,14 +36,12 @@ function validarGR() {
             }
         }
 
-        // Exibe na interface
+        // Exibe
         document.getElementById('defV').innerText = Array.from(V).join(', ');
         document.getElementById('defT').innerText = Array.from(T).join(', ');
         document.getElementById('defS').innerText = startSymbol;
         formalDefDiv.style.display = 'block';
-        // ----------------------------------------------------
 
-        // Testa a palavra a partir do símbolo inicial
         const isAccepted = testWord(word, startSymbol, rules, 0);
 
         if (isAccepted) {
