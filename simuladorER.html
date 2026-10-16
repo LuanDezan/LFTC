@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Validador de Regex</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Validador de Expressões Regulares</h2>
+
+      <div class="form-group">
+        <label for="regexInput">Expressão Regular (Regex):</label>
+        <input type="text" id="regexInput" placeholder="Ex: ^[0-9]+$" />
+      </div>
+
+      <div class="exemplos">
+        <h3>Exemplos de Expressões Regulares</h3>
+        <div class="exemplo">
+          <code>^[0-9]+$</code> <span>Somente números</span>
+        </div>
+        <div class="exemplo">
+          <code>^[a-zA-Z]+$</code> <span>Somente letras</span>
+        </div>
+        <div class="exemplo">
+          <code>^[0-9]{5}$</code> <span>Exatamente 5 números</span>
+        </div>
+        <div class="exemplo">
+          <code>^[a-zA-Z0-9]+$</code> <span>Letras e números</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="textInput">Texto de Entrada:</label>
+        <textarea
+          id="textInput"
+          placeholder="Digite o texto para validar..."
+        ></textarea>
+      </div>
+
+      <button id="btnTestar">Validar Texto</button>
+
+      <div class="form-group">
+        <label>Resultado:</label>
+        <div id="resultado" class="neutro">
+          Nenhuma validação realizada ainda.
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
