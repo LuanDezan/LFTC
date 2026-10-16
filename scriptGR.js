@@ -2,19 +2,20 @@ document.getElementById('btnTestarGR').addEventListener('click', validarGR);
 
 function validarGR() {
     const grammarText = document.getElementById('grammarInput').value.trim();
-    const word = document.getElementById('textInputGR').value.trim();
+    const word = document.getElementById('textInputGR').value;
     const resultadoDiv = document.getElementById('resultadoGR');
     const formalDefDiv = document.getElementById('formalDefinitionDiv');
 
     if (!grammarText) {
         resultadoDiv.className = "neutro";
-        resultadoDiv.innerHTML = "Por favor, insira as regras da Gramática Regular.";
+        resultadoDiv.textContent = "Por favor, insira as regras da Gramática Regular.";
         formalDefDiv.style.display = 'none';
         return;
     }
 
     try {
         const { rules, startSymbol } = parseGrammar(grammarText);
+        validateGrammar(rules);
         
         // G = (V, T, P, S)
         const V = new Set();
@@ -37,30 +38,30 @@ function validarGR() {
         }
 
         // Exibe
-        document.getElementById('defV').innerText = Array.from(V).join(', ');
-        document.getElementById('defT').innerText = Array.from(T).join(', ');
-        document.getElementById('defS').innerText = startSymbol;
+        document.getElementById('defV').textContent = Array.from(V).join(', ');
+        document.getElementById('defT').textContent = Array.from(T).join(', ');
+        document.getElementById('defS').textContent = startSymbol;
         formalDefDiv.style.display = 'block';
 
         const isAccepted = testWord(word, startSymbol, rules, 0);
 
         if (isAccepted) {
             resultadoDiv.className = "valido";
-            resultadoDiv.innerHTML = `A palavra <strong>"${word}"</strong> pertence à linguagem gerada pela GR (Aceita).`;
+            resultadoDiv.textContent = `A palavra ${word === '' ? 'ε (palavra vazia)' : JSON.stringify(word)} pertence à linguagem gerada pela GR (Aceita).`;
         } else {
             resultadoDiv.className = "invalido";
-            resultadoDiv.innerHTML = `A palavra <strong>"${word}"</strong> NÃO pertence à linguagem gerada pela GR (Rejeitada).`;
+            resultadoDiv.textContent = `A palavra ${word === '' ? 'ε (palavra vazia)' : JSON.stringify(word)} NÃO pertence à linguagem gerada pela GR (Rejeitada).`;
         }
     } catch (e) {
         resultadoDiv.className = "invalido";
-        resultadoDiv.innerHTML = `Erro na Gramática: ${e.message}`;
+        resultadoDiv.textContent = `Erro na Gramática: ${e.message}`;
         formalDefDiv.style.display = 'none';
     }
 }
 
 function parseGrammar(text) {
     const lines = text.split('\n');
-    const rules = {};
+    const rules = Object.create(null);
     let startSymbol = null;
 
     for (let line of lines) {
@@ -113,4 +114,58 @@ function testWord(word, currentSymbol, rules, currentIndex) {
     }
 
     return false;
+}
+
+// Valida todas as regras antes de testar a palavra, inclusive as que não
+// seriam visitadas durante a derivação.
+function validateGrammar(rules) {
+    const nonTerminalPattern = /^[A-Z]$/;
+    const referencedNonTerminals = new Set();
+
+    function isTerminal(symbol) {
+        return symbol.length === 1
+            && !/[A-Z]/.test(symbol)
+            && symbol !== '&'
+            && symbol !== '|'
+            && !/\s/.test(symbol);
+    }
+
+    for (const [nonTerminal, productions] of Object.entries(rules)) {
+        if (!nonTerminalPattern.test(nonTerminal)) {
+            throw new Error("O lado esquerdo de cada regra deve ser um único não terminal maiúsculo (A-Z).");
+        }
+
+        for (const production of productions) {
+            if (production === '&') continue;
+
+            if (production === '') {
+                throw new Error("Existe uma produção vazia. Use '&' para representar épsilon.");
+            }
+
+            if (production.length === 1 && isTerminal(production)) {
+                continue;
+            }
+
+            if (production.length === 2
+                && isTerminal(production[0])
+                && nonTerminalPattern.test(production[1])) {
+                referencedNonTerminals.add(production[1]);
+                continue;
+            }
+
+            throw new Error(
+                "A produção '" + production
+                + "' é inválida. Use o formato aA, a ou & (um símbolo terminal e, opcionalmente, um não terminal maiúsculo)."
+            );
+        }
+    }
+
+    for (const nonTerminal of referencedNonTerminals) {
+        if (!Object.prototype.hasOwnProperty.call(rules, nonTerminal)) {
+            throw new Error(
+                "O não terminal '" + nonTerminal
+                + "' é usado em uma produção, mas não possui regra definida."
+            );
+        }
+    }
 }
