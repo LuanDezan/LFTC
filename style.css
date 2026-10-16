@@ -11,6 +11,20 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 0 auto;
+}
+
+.main-container {
+    text-align: center;
+}
+
+.main-container p {
+    margin-bottom: 25px;
+    color: #555;
+}
+
+.actions {
+    margin-top: 20px;
 }
 
 .form-group {
@@ -36,16 +50,20 @@ textarea {
     height: 100px;
 }
 
-button {
+button, .btn-link {
+    display: inline-block;
     background-color: #007BFF;
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 4px;
     cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
 }
 
-button:hover {
+button:hover, .btn-link:hover {
     background-color: #0056b3;
 }
 
@@ -76,39 +94,39 @@ button:hover {
 }
 
 .exemplos {
-margin-top: -5px;
-margin-bottom: 20px;
-padding: 12px;
-background-color: #f8f9fa;
-border: 1px solid #ddd;
-border-radius: 6px;
+    margin-top: -5px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
 }
 
 .exemplos h3 {
-margin-top: 0;
-margin-bottom: 10px;
-font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
 }
 
 .exemplo {
-display: flex;
-align-items: center;
-gap: 10px;
-margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
 }
 
-.exemplo {
-margin-bottom: 0;
+.exemplo:last-child {
+    margin-bottom: 0;
 }
 
 .exemplo code {
-background-color: #e9ecef;
-padding: 4px 7px;
-border-radius: 4px;
-font-family: monospace;
+    background-color: #e9ecef;
+    padding: 4px 7px;
+    border-radius: 4px;
+    font-family: monospace;
 }
 
 .exemplo span {
-color: #555;
-font-size: 14px;
+    color: #555;
+    font-size: 14px;
 }

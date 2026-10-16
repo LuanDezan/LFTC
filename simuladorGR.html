@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador de Gramática Regular (GR)</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <a href="index.html" class="btn-link" style="margin-bottom: 15px; display: inline-block;">&larr; Voltar</a>
+      
+      <h2>Simulador de Gramática Regular</h2>
+
+      <div class="form-group">
+        <label for="grammarInput">Regras de Produção P (Ex: S -> aA | b):</label>
+        <textarea
+          id="grammarInput"
+          placeholder="S -> aA | b&#10;A -> aA | &"
+          style="height: 120px; font-family: monospace;"
+        ></textarea>
+        <small style="color: #666; display: block; margin-top: 5px;">Use <b>&</b> para representar épsilon (palavra vazia). A primeira regra define o símbolo inicial.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="textInputGR">Palavra para Testar:</label>
+        <input type="text" id="textInputGR" placeholder="Digite a palavra..." />
+      </div>
+
+      <button id="btnTestarGR">Testar Palavra na GR</button>
+
+      <!-- Nova Div para a Definição Formal -->
+      <div id="formalDefinitionDiv" class="exemplos" style="display: none; margin-top: 20px;">
+        <h3>Definição Formal: G = (V, T, P, S)</h3>
+        <div style="margin-bottom: 5px;"><strong>V (Não Terminais):</strong> { <span id="defV"></span> }</div>
+        <div style="margin-bottom: 5px;"><strong>T (Terminais):</strong> { <span id="defT"></span> }</div>
+        <div style="margin-bottom: 5px;"><strong>P (Produções):</strong> <em>(Regras inseridas no campo acima)</em></div>
+        <div style="margin-bottom: 5px;"><strong>S (Símbolo Inicial):</strong> <span id="defS"></span></div>
+      </div>
+
+      <div class="form-group" style="margin-top: 20px;">
+        <label>Resultado:</label>
+        <div id="resultadoGR" class="neutro">
+          Nenhum teste realizado ainda.
+        </div>
+      </div>
+    </div>
+
+    <script src="scriptGR.js"></script>
+  </body>
+</html>
